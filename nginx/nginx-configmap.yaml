@@ -1,0 +1,21 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: nginx-config
+data:
+  nginx.conf: |
+    server {
+      listen 5001;
+      server_name 137.184.216.144;
+      ssl on;
+      ssl_certificate /home/zhe/app/nginx/server.crt;
+      ssl_certificate_key /home/zhe/app/nginx/server.key;
+      
+      #ssl_client_certificate /home/zhe/app/nginx/ca.crt;
+      #ssl_verify_client on;
+      
+      ssl_session_timeout 5m;
+      ssl_protocols SSLv2 SSLv3 TLSv1;
+      ssl_ciphers ALL:!ADH:!EXPORT56:RC4+RSA:+HIGH:+MEDIUM:+LOW:+SSLv2:+EXP;
+      ssl_prefer_server_ciphers on;
+    }
