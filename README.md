@@ -38,3 +38,8 @@ mysql -h cluster1-haproxy -uroot -proot_password
 
 kubectl delete all --all -n pxc
 ```
+
+```
+brew install kubectl 
+scp -r zhe@node4:~/.kube ~/.kube
+```
