@@ -4,6 +4,7 @@ get token kubectl -n kube-system describe secret $(kubectl -n kube-system get se
 
 pkill -f 'kubectl proxy --port=8081'
 
+kubectl -n kube-system describe $(kubectl -n kube-system get secret -n kube-system -o name | grep namespace) | grep token
 ### Create https ssl
 ```
 openssl version -a
