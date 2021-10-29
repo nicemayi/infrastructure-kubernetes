@@ -4,6 +4,8 @@ metadata:
   name: mysql57
   labels:
     app: mysql
+  annotations:
+    metallb.universe.tf/allow-shared-ip: shared
 spec:
   ports:
     - port: 3306

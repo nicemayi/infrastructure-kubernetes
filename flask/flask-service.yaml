@@ -4,12 +4,15 @@ metadata:
   name: flask-svc
   labels:
     app: flask-helloworld
+  annotations:
+    metallb.universe.tf/allow-shared-ip: shared
 spec:
   selector:
     app: flask-helloworld
   type: LoadBalancer
+  # type: NodePort
   ports:
     - protocol: TCP
       port: 80
       targetPort: 5000
-
+      # nodePort: 30007
