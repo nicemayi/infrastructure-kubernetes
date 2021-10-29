@@ -5,10 +5,11 @@ metadata:
   labels:
     app: flask-helloworld
 spec:
-  type: LoadBalancer 
-  ports:
-  - port: 80
-    targetPort: 5000
-    protocol: TCP
   selector:
     app: flask-helloworld
+  type: LoadBalancer
+  ports:
+    - protocol: TCP
+      port: 80
+      targetPort: 5000
+
