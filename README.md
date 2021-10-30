@@ -43,3 +43,21 @@ kubectl delete all --all -n pxc
 brew install kubectl 
 scp -r zhe@node4:~/.kube ~/.kube
 ```
+
+ubuntu mount: https://www.digitalocean.com/community/tutorials/how-to-set-up-an-nfs-mount-on-ubuntu-18-04
+
+```
+sudo mount -t nfs 137.184.216.144:/var/nfs/general /mnt
+```
+
+```
+sudo umount /mnt
+```
+
+```
+# delete hanging
+kubectl patch pv pv-nfs-pv1 -p '{"metadata":{"finalizers":null}}'
+```
+
+$ vi /etc/exports
+/data/k8s  *(rw,sync,no_root_squash)

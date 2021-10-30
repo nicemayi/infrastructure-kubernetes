@@ -24,7 +24,7 @@ spec:
     matchLabels:
       app: mysql
   serviceName: "mysql"
-  replicas: 3
+  replicas: 1
   template:
     metadata:
       labels:
@@ -45,9 +45,8 @@ spec:
           value: "password"
       volumes:
         - name: mysql-data-pvc
-          hostPath:
-            path: /tmp/mysql
-            type: DirectoryOrCreate
-          # persistentVolumeClaim:
-          #   claimName: pvc-hostpath
-
+          # hostPath:
+          #   path: /tmp/mysql
+          #   type: DirectoryOrCreate
+          persistentVolumeClaim:
+            claimName: pv-nfs-pvc1
