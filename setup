@@ -1,8 +1,18 @@
 #!/bin/bash
 # default mode is worker
+
 MODE="worker"
-if [ $1 = "master" ]; then
+HOST_IP=""
+
+if [ $1=="master" ]; then
     MODE=$1
+    if [ -z $2 ]; then
+        echo "If this is a master node, please specify the host ip (this machine) as second parameters"
+        echo "Example: 
+            ./setup master 192.168.10.121"
+        exit 1
+    fi
+    HOST_IP=$2
 fi
 
 sudo echo "Step - 1: Installing docker..."
@@ -27,7 +37,7 @@ sudo apt-get install -y docker-ce=5:20.10.8~3-0~ubuntu-hirsute docker-ce-cli=5:2
 
 # add this config if using private docker registry
 # "insecure-registries": ["192.168.10.62:6004"],
-sudo cat > /etc/docker/daemon.json <<EOF
+su root -c 'cat > /etc/docker/daemon.json <<EOF
 {
     "insecure-registries": ["192.168.10.62:6004"],
     "exec-opts": ["native.cgroupdriver=systemd"],
@@ -39,7 +49,8 @@ sudo cat > /etc/docker/daemon.json <<EOF
 }
 EOF
 sudo systemctl daemon-reload
-sudo systemctl restart docker
+sudo systemctl restart docker'
+
 echo "Step - 1: Docker installation & configuration done!"
 
 echo "Step - 2: Installing Kubernetes components..."
@@ -54,14 +65,17 @@ sudo apt-get update
 sudo swapoff -a
 
 sudo apt-get install -qy kubelet=1.22.3-00 kubeadm=1.22.3-00 kubectl=1.22.3-00
-
+echo "Step - 3: Starting Kubernetes Cluster..."
 
 if [ $MODE = "master" ]; then
-    rm -f ~/.kube
+    echo "Start master node..."
+    sudo kubeadm init --apiserver-advertise-address=${HOST_IP} --pod-network-cidr=192.168.0.0/16
+    
+    rm -rf ~/.kube
     mkdir -p $HOME/.kube
     sudo cp -i /etc/kubernetes/admin.conf $HOME/.kube/config
     sudo chown $(id -u):$(id -g) $HOME/.kube/config
-
+    echo "copuy done!"
     echo "Installing Calico CNI..."
     kubectl apply -f ./calico/1_tigera-operator.yaml
     kubectl apply -f ./calico/2_custom-resources.yaml
@@ -70,12 +84,6 @@ if [ $MODE = "master" ]; then
     kubectl apply -f ./metallb/1_namespace.yaml
     kubectl apply -f ./metallb/2_metallb.yaml
     kubectl apply -f ./metallb/3_cluster.yaml
+
+    echo "Step - 3: Congratulations, Your Kubernetes cluster is up!"
 fi
-
-echo "Step - 2: Kubernetes installation Done!"
-
-echo "Now you can spin up new k8s cluster with the following commands:
-
-    sudo kubeadm init --apiserver-advertise-address=<REPLACE_WITH_THIS_HOST_IP> --pod-network-cidr=192.168.0.0/16"
-
-echo "Or if you are at worker node, join the cluster with the output from above."
