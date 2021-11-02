@@ -39,7 +39,6 @@ sudo apt-get install -y docker-ce=5:20.10.8~3-0~ubuntu-hirsute docker-ce-cli=5:2
 # "insecure-registries": ["192.168.10.62:6004"],
 su root -c 'cat > /etc/docker/daemon.json <<EOF
 {
-    "insecure-registries": ["192.168.10.62:6004"],
     "exec-opts": ["native.cgroupdriver=systemd"],
     "log-driver": "json-file",
     "log-opts": {
@@ -68,7 +67,7 @@ sudo apt-get install -qy kubelet=1.22.3-00 kubeadm=1.22.3-00 kubectl=1.22.3-00
 echo "Step - 3: Starting Kubernetes Cluster..."
 
 if [ $MODE = "master" ]; then
-    echo "Start master node..."
+    echo "Starting master node..."
     sudo kubeadm init --apiserver-advertise-address=${HOST_IP} --pod-network-cidr=192.168.0.0/16
     
     rm -rf ~/.kube
