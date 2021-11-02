@@ -1,6 +1,9 @@
 #!/bin/bash
 # default mode is worker
 
+# NEED TO RUN AS ROOT
+sudo su
+
 MODE="worker"
 HOST_IP=""
 
@@ -37,7 +40,7 @@ sudo apt-get install -y docker-ce=5:20.10.8~3-0~ubuntu-hirsute docker-ce-cli=5:2
 
 # add this config if using private docker registry
 # "insecure-registries": ["192.168.10.62:6004"],
-su root -c 'cat > /etc/docker/daemon.json <<EOF
+cat > /etc/docker/daemon.json <<EOF
 {
     "exec-opts": ["native.cgroupdriver=systemd"],
     "log-driver": "json-file",
@@ -48,7 +51,7 @@ su root -c 'cat > /etc/docker/daemon.json <<EOF
 }
 EOF
 sudo systemctl daemon-reload
-sudo systemctl restart docker'
+sudo systemctl restart docker
 
 echo "Step - 1: Docker installation & configuration done!"
 
