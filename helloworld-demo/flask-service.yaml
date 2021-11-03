@@ -9,10 +9,10 @@ metadata:
 spec:
   selector:
     app: flask-helloworld
-  type: LoadBalancer
-  # type: NodePort
+  # type: LoadBalancer
+  type: NodePort
   ports:
     - protocol: TCP
       port: 80
       targetPort: 5000
-      # nodePort: 30007
+      nodePort: 30007
