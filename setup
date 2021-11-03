@@ -4,7 +4,7 @@
 MODE="worker"
 HOST_IP=""
 
-if [ $1=="master" ]; then
+if [ $1 == "master" ]; then
     MODE=$1
     if [ -z $2 ]; then
         echo "If this is a master node, please specify the host ip (this machine) as third parameters"
