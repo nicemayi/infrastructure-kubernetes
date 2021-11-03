@@ -88,5 +88,8 @@ if [ $MODE = "master" ]; then
     kubectl apply -f ./metallb/2_metallb.yaml
     kubectl apply -f ./metallb/3_cluster.yaml
 
+    echo "Installing ingress-nginx..."
+    kubectl apply -f ./ingress-nginx/ingress-nginx-controller.yaml
+
     echo "Step - 3: Congratulations, Your Kubernetes cluster is up!"
 fi
