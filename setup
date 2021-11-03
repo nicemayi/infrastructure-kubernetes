@@ -79,6 +79,8 @@ if [ $MODE = "master" ]; then
 
     echo "Installing Calico CNI..."
     kubectl apply -f ./calico/1_tigera-operator.yaml
+    # Let's slow down a bit until tigera operator is ready
+    sleep 20
     kubectl apply -f ./calico/2_custom-resources.yaml
 
     echo "Installing MetalLB..."

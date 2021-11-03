@@ -62,18 +62,31 @@ kubectl patch pv pv-nfs-pv1 -p '{"metadata":{"finalizers":null}}'
 $ vi /etc/exports
 /data/k8s  *(rw,sync,no_root_squash)
 
+#### If you are setting up master:
 ```
 chmod +x ./setup
 
-# The setup script MUST be running as root
 sudo -s
-
-./setup master 137.184.216.144
-# just run "./setup" for setting up worker node
-
+./setup master <YOUR_HOST_IP> # Example: ./setup master 137.184.216.144
 exit
 
-# (Optional) run the following when you setup master and need `kubectl` for current user
 sudo cp -r /root/.kube ~/.kube
-chown $(id -u):$(id -g) $HOME/.kube/config
+sudo chown $(id -u):$(id -g) $HOME/.kube/config
+```
+
+#### If you are setting up worker:
+On worker node, install docker + k8s components:
+```
+chmod +x ./setup
+
+sudo -s
+./setup
+exit
+```
+
+Then login master node, retrieve the cluster token:
+```
+sudo kubeadm token create $(kubeadm token generate) --print-join-command
+```
+and execute the ^ output on your worker node.
 ```
