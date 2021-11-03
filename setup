@@ -67,7 +67,7 @@ echo "Step - 3: Starting Kubernetes Cluster..."
 
 if [ $MODE = "master" ]; then
     echo "Starting master node..."
-    kubeadm init --apiserver-advertise-address=${HOST_IP} --pod-network-cidr=192.168.0.0/16
+    kubeadm init --apiserver-advertise-address=${HOST_IP} --pod-network-cidr=10.244.0.0/16
     echo "Snooze for a while until kubectl config is ready..."
     sleep 10
 
@@ -77,16 +77,8 @@ if [ $MODE = "master" ]; then
     chown $(id -u):$(id -g) $HOME/.kube/config
     echo "copy done!"
 
-    echo "Installing Calico CNI..."
-    kubectl apply -f ./calico/1_tigera-operator.yaml
-    # Let's slow down a bit until tigera operator is ready
-    sleep 20
-    kubectl apply -f ./calico/2_custom-resources.yaml
-
-    echo "Installing MetalLB..."
-    kubectl apply -f ./metallb/1_namespace.yaml
-    kubectl apply -f ./metallb/2_metallb.yaml
-    kubectl apply -f ./metallb/3_cluster.yaml
+    echo "Installing Flannel CNI..."
+    kubectl apply -f ./flannel/kube-flannel.yaml
 
     echo "Installing ingress-nginx..."
     kubectl apply -f ./ingress-nginx/ingress-nginx-controller.yaml
