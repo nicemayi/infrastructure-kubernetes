@@ -73,6 +73,11 @@ exit
 sudo cp -r /root/.kube ~/.kube
 sudo chown $(id -u):$(id -g) $HOME/.kube/config
 ```
+You can verify your cluster by `kubectl get nodes`, and expecting:
+```
+NAME    STATUS   ROLES                  AGE   VERSION
+node4   Ready    control-plane,master   66s   v1.22.3
+```
 
 #### If you are setting up worker:
 On worker node, install docker + k8s components:
