@@ -1,18 +1,15 @@
 #!/bin/bash
 # default mode is worker
 
-# NEED TO RUN AS ROOT
-sudo su
-
 MODE="worker"
 HOST_IP=""
 
 if [ $1=="master" ]; then
     MODE=$1
     if [ -z $2 ]; then
-        echo "If this is a master node, please specify the host ip (this machine) as second parameters"
+        echo "If this is a master node, please specify the host ip (this machine) as third parameters"
         echo "Example: 
-            ./setup master 192.168.10.121"
+            ./setup master <YOUR_HOST_IP>"
         exit 1
     fi
     HOST_IP=$2
@@ -52,7 +49,10 @@ cat > /etc/docker/daemon.json <<EOF
 EOF
 sudo systemctl daemon-reload
 sudo systemctl restart docker
+exit
+su $OPERATOR
 
+echo "NOW USER IS ${OPERATOR}"
 echo "Step - 1: Docker installation & configuration done!"
 
 echo "Step - 2: Installing Kubernetes components..."

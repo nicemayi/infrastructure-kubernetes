@@ -61,3 +61,10 @@ kubectl patch pv pv-nfs-pv1 -p '{"metadata":{"finalizers":null}}'
 
 $ vi /etc/exports
 /data/k8s  *(rw,sync,no_root_squash)
+
+```
+chomid +x ./setup
+sudo -s
+./setup master 137.184.216.144
+exit
+```
