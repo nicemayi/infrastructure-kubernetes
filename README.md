@@ -63,8 +63,17 @@ $ vi /etc/exports
 /data/k8s  *(rw,sync,no_root_squash)
 
 ```
-chomid +x ./setup
+chmod +x ./setup
+
+# The setup script MUST be running as root
 sudo -s
+
 ./setup master 137.184.216.144
+# just run "./setup" for setting up worker node
+
 exit
+
+# (Optional) run the following when you setup master and need `kubectl` for current user
+sudo cp -r /root/.kube ~/.kube
+chown $(id -u):$(id -g) $HOME/.kube/config
 ```
