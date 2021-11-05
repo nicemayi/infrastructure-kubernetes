@@ -33,7 +33,7 @@ echo \
  $(lsb_release -cs) stable" | sudo tee /etc/apt/sources.list.d/docker.list > /dev/null
 
 apt-get update
-apt-get install -y docker-ce=5:20.10.8~3-0~ubuntu-hirsute docker-ce-cli=5:20.10.8~3-0~ubuntu-hirsute containerd.io
+apt-get install -y docker-ce=5:20.10.10~3-0~ubuntu-focal docker-ce-cli=5:20.10.10~3-0~ubuntu-focal containerd.io
 
 # add this config if using private docker registry
 # "insecure-registries": ["192.168.10.62:6004"],
