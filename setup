@@ -33,7 +33,7 @@ echo \
  $(lsb_release -cs) stable" | sudo tee /etc/apt/sources.list.d/docker.list > /dev/null
 
 apt-get update
-apt-get install -y docker-ce=5:20.10.10~3-0~ubuntu-focal docker-ce-cli=5:20.10.10~3-0~ubuntu-focal containerd.io
+apt-get install -y docker-ce docker-ce-cli containerd.io
 
 # add this config if using private docker registry
 # "insecure-registries": ["192.168.10.62:6004"],
@@ -62,7 +62,7 @@ EOF
 apt-get update
 swapoff -a
 
-apt-get install -qy kubelet=1.22.3-00 kubeadm=1.22.3-00 kubectl=1.22.3-00
+apt-get install -y kubelet kubeadm kubectl
 echo "Step - 3: Starting Kubernetes Cluster..."
 
 if [ $MODE = "master" ]; then
