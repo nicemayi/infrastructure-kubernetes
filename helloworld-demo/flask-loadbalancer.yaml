@@ -19,3 +19,21 @@ spec:
         image: digitalocean/flask-helloworld:latest
         ports:
         - containerPort: 5000
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: flask-svc
+  labels:
+    app: flask-helloworld
+spec:
+  selector:
+    app: flask-helloworld
+  type: NodePort
+  type: LoadBalancer
+  # externalIPs:
+  # - 137.184.216.144
+  ports:
+    - protocol: TCP
+      port: 80
+      targetPort: 5000
